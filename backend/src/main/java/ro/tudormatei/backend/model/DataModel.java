@@ -6,31 +6,34 @@ import java.util.HashMap;
 
 public class DataModel {
 
-    private ArrayList<String> wordsToSearch;
+    private HashMap<String, String> wordsToSearch;
     private HashMap<String, String> wordsToReplace;
 
     public DataModel() {
-        wordsToSearch = new ArrayList<>();
+        wordsToSearch = new HashMap<>();
         SetupWordsToSearch();
         wordsToReplace = new HashMap<>();
         SetupWordsToReplace();
     }
 
     private void SetupWordsToSearch() {
-        wordsToSearch.add("Data");
-        wordsToSearch.add("Subsemnatul");
-        wordsToSearch.add("nr.");
-        wordsToSearch.add("str.");
+        wordsToSearch.put("Data", "date");
+        wordsToSearch.put("Subsemnatul", "fullname");
+        wordsToSearch.put("str.", "street");
+        wordsToSearch.put("nr.", "nr");
     }
 
     private void SetupWordsToReplace() {
-        wordsToReplace.put("data", "20:10:2023");
-        wordsToReplace.put("subsemnatul", "Tudor Matei");
-        wordsToReplace.put("nr\\.", "35");
-        wordsToReplace.put("str\\.", "strada castanilor");
+        wordsToReplace.put("date", "01/01/2023");
+        wordsToReplace.put("fname", "Tudor");
+        wordsToReplace.put("lname", "Matei");
+        wordsToReplace.put("fullname", "Tudor Matei");
+        wordsToReplace.put("street", "Castanilor");
+        wordsToReplace.put("nr", "35");
+        wordsToReplace.put("email", "tudormatei010@gmail.com");
     }
 
-    public ArrayList<String> getWordsToSearch() {
+    public HashMap<String, String> getWordsToSearch() {
         return wordsToSearch;
     }
 

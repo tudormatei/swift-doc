@@ -9,6 +9,7 @@ import ro.tudormatei.backend.model.DataModel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,16 +55,19 @@ public class DocumentService {
         String savePath = documentPath + "output.pdf";
 
         DataModel dataModel = new DataModel();
-        List<String> wordsToSearch = dataModel.getWordsToSearch();
+        Map<String, String> wordsToSearch = dataModel.getWordsToSearch();
         Map<String, String> wordsToReplace = dataModel.getWordsToReplace();
 
         Document pdfDocument = new Document(loadPath);
 
-        for (int i = 0; i < wordsToSearch.size(); i++) {
-            String word = wordsToSearch.get(i);
+        for (Map.Entry<String, String> entry : wordsToSearch.entrySet()) {
+            String word = entry.getKey();
+
+            System.out.println("Word that is being searched -> " + word);
 
             // Create TextAbsorber object to find all instances of the input search phrase
-            TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber(word + " [\\.\\_\\:\\-]+|" + word + " [\\(a-z\\)]+ [\\.]+"); //Regular expression with the word
+            String expression = word + " [\\.+/ \\.+/ \\.+]|" + word + " [\\.\\_]+|" + word + " [\\([a-z]+\\)]+ [\\.]+|" + word +"/[a-z], [\\.]+";
+            TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber(expression); //Regular expression with the word
 
             // Set text search option to enable regular expression usage
             TextSearchOptions textSearchOptions = new TextSearchOptions(true);
@@ -79,7 +83,9 @@ public class DocumentService {
             for (TextFragment textFragment : (Iterable<TextFragment>) textFragmentCollection) {
                 // Update text and other properties
                 TextFragmentState prevTextSate = textFragment.getTextState();
-                textFragment.setText(word + " " + wordsToReplace.get(word.toLowerCase()));
+                String replacement = word + " " + wordsToReplace.get(wordsToSearch.get(word));
+                System.out.println("Found word: " + word + " -> replacing it with " + replacement);
+                textFragment.setText(replacement);
                 textFragment.getTextState().setFont(prevTextSate.getFont());
                 textFragment.getTextState().setFontSize(prevTextSate.getFontSize());
                 textFragment.getTextState().setForegroundColor(Color.getBlue());
