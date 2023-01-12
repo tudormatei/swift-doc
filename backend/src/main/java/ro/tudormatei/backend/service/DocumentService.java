@@ -66,7 +66,8 @@ public class DocumentService {
             System.out.println("Word that is being searched -> " + word);
 
             // Create TextAbsorber object to find all instances of the input search phrase
-            String expression = word + " [\\.+/ \\.+/ \\.+]|" + word + " [\\.\\_]+|" + word + " [\\([a-z]+\\)]+ [\\.]+|" + word +"/[a-z], [\\.]+";
+            //String expression = word + " [\\.+/ \\.+/ " + "\\.+]|" + word + " [\\.\\_]+|" + word + " [\\([a-z]+\\)]+ [\\.]+|" + word +"/[a-z], [\\.]+";
+            String expression = word + "\\s?[^\\.|^_]+\\s?[\\.|/|_]+";
             TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber(expression); //Regular expression with the word
 
             // Set text search option to enable regular expression usage
@@ -79,11 +80,19 @@ public class DocumentService {
             // Get the extracted text fragments into collection
             TextFragmentCollection textFragmentCollection = textFragmentAbsorber.getTextFragments();
 
+            String key = word;
+            if (word.contains("\\")) {
+                StringBuilder newWord = new StringBuilder(word);
+                int index = newWord.indexOf("\\");
+                newWord.deleteCharAt(index);
+                word = newWord.toString();
+            }
+
             // Loop through the fragments
             for (TextFragment textFragment : (Iterable<TextFragment>) textFragmentCollection) {
                 // Update text and other properties
                 TextFragmentState prevTextSate = textFragment.getTextState();
-                String replacement = word + " " + wordsToReplace.get(wordsToSearch.get(word));
+                String replacement = /*" " + */word + " " + wordsToReplace.get(wordsToSearch.get(key)) + " ";
                 System.out.println("Found word: " + word + " -> replacing it with " + replacement);
                 textFragment.setText(replacement);
                 textFragment.getTextState().setFont(prevTextSate.getFont());
