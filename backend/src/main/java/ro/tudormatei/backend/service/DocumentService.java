@@ -66,7 +66,6 @@ public class DocumentService {
             System.out.println("Word that is being searched -> " + word);
 
             // Create TextAbsorber object to find all instances of the input search phrase
-            //String expression = word + " [\\.+/ \\.+/ " + "\\.+]|" + word + " [\\.\\_]+|" + word + " [\\([a-z]+\\)]+ [\\.]+|" + word +"/[a-z], [\\.]+";
             String expression = word + "\\s?[^\\.|^_]+\\s?[\\.|/|_]+";
             TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber(expression); //Regular expression with the word
 
@@ -92,12 +91,31 @@ public class DocumentService {
             for (TextFragment textFragment : (Iterable<TextFragment>) textFragmentCollection) {
                 // Update text and other properties
                 TextFragmentState prevTextSate = textFragment.getTextState();
-                String replacement = /*" " + */word + " " + wordsToReplace.get(wordsToSearch.get(key)) + " ";
-                System.out.println("Found word: " + word + " -> replacing it with " + replacement);
+
+                String replacement = "";
+                try {
+                    replacement = /*" " + */word + " " + wordsToReplace.get(wordsToSearch.get(key))/* + " "*/;
+                    System.out.println("Found word: " + word + " -> replacing it with " + replacement);
+                } catch (Exception e) {
+                    System.out.println("The replacement was not found -> " + word);
+                }
+
+                //Check if field should be completed or is knows
+                Color foregroundColor = prevTextSate.getForegroundColor();
+                Color backgroundColor = Color.getWhite();
+
+                if (word.equals("nr.")) {
+                    replacement = word + " " + "____";
+
+                    foregroundColor = Color.getRed();
+                    backgroundColor = Color.getYellow();
+                }
+
                 textFragment.setText(replacement);
                 textFragment.getTextState().setFont(prevTextSate.getFont());
                 textFragment.getTextState().setFontSize(prevTextSate.getFontSize());
-                textFragment.getTextState().setForegroundColor(Color.getBlue());
+                textFragment.getTextState().setForegroundColor(foregroundColor);
+                textFragment.getTextState().setBackgroundColor(backgroundColor);
             }
         }
 

@@ -18,8 +18,11 @@ public class DataModel {
 
     private void SetupWordsToSearch() {
         wordsToSearch.put("Data", "date");
+        wordsToSearch.put("DATA", "date");
         wordsToSearch.put("codul numeric personal", "CNP");
+        wordsToSearch.put("cod numeric personal", "CNP");
         wordsToSearch.put("Subsemnatul", "fullname");
+        wordsToSearch.put("Dl/Dna", "fullname");
         wordsToSearch.put("str\\.", "street");
         wordsToSearch.put("nr\\.", "nr");
         wordsToSearch.put("telefon", "phonenr");
