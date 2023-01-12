@@ -114,7 +114,7 @@ public class DocumentService {
                 textFragment.setText(replacement);
                 textFragment.getTextState().setFont(prevTextSate.getFont());
                 textFragment.getTextState().setFontSize(prevTextSate.getFontSize());
-                textFragment.getTextState().setForegroundColor(foregroundColor);
+                textFragment.getTextState().setForegroundColor(Color.getBlue());
                 textFragment.getTextState().setBackgroundColor(backgroundColor);
             }
         }
