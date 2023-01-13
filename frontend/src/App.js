@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';  
 
-import { Navbar, Home, NewDocument, About, Login, Register, Footer} from './components';
+import { Header, Home, NewDocument, About, Login, Register, Footer} from './components';
 import './App.css'
 
 const App = () => {
   return (
     <BrowserRouter>
         <div className="app">
-          <Navbar />
+          <Header />
           <Routes>
+            <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/new document" element={<NewDocument />} />
             <Route path="/about" element={<About />} />
