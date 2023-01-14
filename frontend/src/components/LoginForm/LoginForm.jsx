@@ -5,7 +5,7 @@ import { images } from '../../constants';
 
 const LoginForm = () => {
   return (
-    <form className="login w-100 d-flex flex-column justify-content-center align-items-center">
+    <form className="login w-100 d-flex flex-column justify-content-center align-items-center text-center">
       <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Email address</label>
           <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
@@ -18,9 +18,9 @@ const LoginForm = () => {
           <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
           <label class="form-check-label" for="exampleCheck1">Remember me</label>
       </div>
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn">Login</button>
     <div class="mb-3 mt-3">
-      Don't have an account? Register <a href="/register">here</a>
+      Don't have an account? Register <a href="/register" className="link-primary">here</a>
     </div>
     </form>
   )

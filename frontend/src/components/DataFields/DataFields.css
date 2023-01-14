@@ -4,3 +4,13 @@
 
     background-color: var(--lightGray-color);
 }
+
+.datafields > button {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.datafields > button:hover {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}

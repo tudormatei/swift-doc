@@ -3,3 +3,13 @@
 
     background: var(--lightGray-color);
 }
+
+.login > button {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.login > button:hover {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}

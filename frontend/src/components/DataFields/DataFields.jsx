@@ -6,7 +6,7 @@ import { images } from '../../constants';
 const DataFields = () => {
   return (
     <form>
-        <div className="datafields w-100 d-flex flex-column justify-content-center align-items-center">
+        <div className="datafields w-100 d-flex flex-column justify-content-center align-items-center text-center">
             <div class="w-50 mb-5 text-center ">
                 <h1>Your Profile Info</h1>
             </div>
@@ -54,7 +54,7 @@ const DataFields = () => {
                 <label for="exampleInputPassword1" class="form-label">Password</label>
                 <input type="password" class="form-control" id="exampleInputPassword1"/>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn">Update</button>
         </div>
     </form>
   )

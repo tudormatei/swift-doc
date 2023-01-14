@@ -3,3 +3,13 @@
 
     background: var(--lightGray-color);
 }
+
+.register > button {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.register > button:hover {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}

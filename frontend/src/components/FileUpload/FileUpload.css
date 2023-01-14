@@ -10,3 +10,13 @@
 
     background: var(--lightGray-color);
 }
+
+.uploadButton > button {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.uploadButton > button:hover {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}
