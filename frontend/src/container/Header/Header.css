@@ -1,0 +1,24 @@
+.navbar{
+    background: var(--primary-color);
+    z-index: 1000;
+    user-select: none;
+  }
+
+  #navbarSupportedContent > ul > li:nth-child(n) > a{
+    color: var(--gray-color);
+    font-size: 1.1rem;
+    padding: 0 0.8rem;
+  }
+  
+  #navbarSupportedContent > ul > li:nth-child(n) > a:hover,
+  #navbarSupportedContent > ul > li:nth-child(n) > a:active{
+    color: var(--secondary-color);
+  }
+  
+  #navbarSupportedContent > a > button{
+    background: var(--secondary-color);
+    font-weight: 600;
+    padding: 0.4rem 1.4rem;
+    border-radius: 30px;
+    border-color: var(--secondary-color);
+  }

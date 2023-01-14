@@ -1,12 +1,10 @@
 import React from 'react'
 
-import './NewDocument.css';
+import { FileUpload } from '../../components';
 
 const NewDocument = () => {
   return (
-    <div className="app__newdoc">
-      NEW DOCUMENT
-    </div>
+    <FileUpload />
   )
 }
 

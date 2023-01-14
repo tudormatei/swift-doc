@@ -1,0 +1,5 @@
+.register {
+    height: 100vh;
+
+    background: var(--lightGray-color);
+}

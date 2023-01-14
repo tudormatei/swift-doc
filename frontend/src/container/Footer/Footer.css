@@ -1,0 +1,32 @@
+.app__footer {
+    height: 15vh;
+    width: 100%;
+  
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+
+    background: var(--lightGray-color);
+    user-select: none;
+}
+
+.app__footer .copyright {
+    color: var(--secondary-color);
+    pointer-events: none;
+    padding-top: .5rem;
+}
+
+.app__footer .links > a {
+    /* background-color: var(--secondary-color); */
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+.app__footer .links > a:hover {
+    background-color: var(--gray-color);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}

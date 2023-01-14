@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { Navbar } from '../../components';
+import { LoginForm } from '../../components';
 
 const Login = () => {
   return (
-    <Navbar />
+    <LoginForm />
   )
 }
 

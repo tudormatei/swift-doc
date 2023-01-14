@@ -1,50 +1,36 @@
-import React, { useState } from 'react';
-import { HiMenuAlt4, HiX } from 'react-icons/hi';
-import { motion } from 'framer-motion';
+import React from 'react'
 
+import './Navbar.css';
 import { images } from '../../constants';
-import './Navbar.scss';
 
 const Navbar = () => {
-  const [toggle, setToggle] = useState(false);
-
   return (
-    <nav className="app__navbar">
-      <div className="app__navbar-logo">
-        <img src={images.logo} alt="logo" />
-      </div>
-      <ul className="app__navbar-links">
-        {['home', 'new document', 'about', 'login', 'register'].map((item) => (
-          <li className="app__flex p-text" key={`link-${item}`}>
-            <div />
-            <a href={`/${item}`}>{item}</a>
-          </li>
-        ))}
-      </ul>
-
-      <div className="app__navbar-menu">
-        <HiMenuAlt4 onClick={() => setToggle(true)} />
-
-        {toggle && (
-          <motion.div
-            whileInView={{ x: [300, 0] }}
-            transition={{ duration: 0.85, ease: 'easeOut' }}
-          >
-            <HiX onClick={() => setToggle(false)} />
-            <ul>
-              {['home', 'new document', 'about', 'login', 'register'].map((item) => (
-                <li key={item}>
-                  <a href={`/${item}`} onClick={() => setToggle(false)}>
-                    {item}
-                  </a>
-                </li>
-              ))}
+    <nav class="navbar navbar-expand-lg navbar-light py-3 px-5 fixed-top">
+        <div class="container-fluid">
+        <a class="navbar-brand" href="/"><img src={images.logo} alt="Bootstrap" width="176" height="36"/></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="/home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/new document">New Document</a>
+              </li>
+              {/* <li class="nav-item">
+                <a class="nav-link" href="/collection">Collection</a>
+              </li> */}
+              <li class="nav-item">
+                <a class="nav-link" href="/profile">Profile</a>
+              </li>
             </ul>
-          </motion.div>
-        )}
-      </div>
-    </nav>
-  );
-};
+            <a href="/login"><button class="btn btn-success text-dark" type="submit">Login</button></a>
+          </div>
+        </div>
+      </nav>
+  )
+}
 
-export default Navbar;
+export default Navbar
