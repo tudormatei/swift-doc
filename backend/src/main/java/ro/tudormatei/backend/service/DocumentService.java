@@ -1,16 +1,18 @@
 package ro.tudormatei.backend.service;
 
+import com.aspose.pdf.devices.PngDevice;
+import com.aspose.pdf.devices.Resolution;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.aspose.pdf.*;
 import ro.tudormatei.backend.model.DataModel;
 
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -104,17 +106,15 @@ public class DocumentService {
                 Color foregroundColor = prevTextSate.getForegroundColor();
                 Color backgroundColor = Color.getWhite();
 
+                //Should not replace
                 if (word.equals("nr.")) {
-                    replacement = word + " " + "____";
-
-                    foregroundColor = Color.getRed();
-                    backgroundColor = Color.getYellow();
+                    replacement = textFragment.getText();
                 }
 
                 textFragment.setText(replacement);
                 textFragment.getTextState().setFont(prevTextSate.getFont());
                 textFragment.getTextState().setFontSize(prevTextSate.getFontSize());
-                textFragment.getTextState().setForegroundColor(Color.getBlue());
+                textFragment.getTextState().setForegroundColor(foregroundColor);
                 textFragment.getTextState().setBackgroundColor(backgroundColor);
             }
         }
@@ -122,9 +122,90 @@ public class DocumentService {
         // Save the updated PDF file
         pdfDocument.save(savePath);
 
-        System.out.println("Document is finished!");
+        System.out.println("Document is completed!");
+
+        generateUnknownDocument(savePath);
 
         return savePath;
+    }
+
+    private void generateUnknownDocument(String path) {
+        Document pdfDocument = new Document(path);
+
+        Path currentRelativePath = Paths.get("");
+        String savePath = currentRelativePath.toAbsolutePath().toString();
+
+        String documentSaveFolder = "\\documents\\unknownDocument\\";
+        savePath = savePath + documentSaveFolder + "output.pdf";
+        System.out.println("The save path for the unknown document is... " + savePath);
+
+        String expression = "([\\.])\\1\\1+";
+        TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber(expression); //Regular expression with the word
+
+        // Set text search option to enable regular expression usage
+        TextSearchOptions textSearchOptions = new TextSearchOptions(true);
+        textFragmentAbsorber.setTextSearchOptions(textSearchOptions);
+
+        // Accept the absorber for all pages of document
+        pdfDocument.getPages().accept(textFragmentAbsorber);
+
+        // Get the extracted text fragments into collection
+        TextFragmentCollection textFragmentCollection = textFragmentAbsorber.getTextFragments();
+
+        // Loop through the fragments
+        for (TextFragment textFragment : (Iterable<TextFragment>) textFragmentCollection) {
+            // Update text and other properties
+            TextFragmentState prevTextSate = textFragment.getTextState();
+            String replacement = textFragment.getText();
+
+            //Check if field should be completed or is knows
+            Color foregroundColor = prevTextSate.getForegroundColor();
+            Color backgroundColor = Color.getYellow();
+
+            textFragment.setText(replacement);
+            textFragment.getTextState().setFont(prevTextSate.getFont());
+            textFragment.getTextState().setFontSize(prevTextSate.getFontSize());
+            textFragment.getTextState().setForegroundColor(foregroundColor);
+            textFragment.getTextState().setBackgroundColor(backgroundColor);
+        }
+
+
+        // Save the updated PDF file
+        pdfDocument.save(savePath);
+
+        generateUnknownDocumentImages(savePath);
+    }
+
+    private  void generateUnknownDocumentImages(String path) {
+        System.out.println("Started generating images for the pdf");
+
+        Document pdfDocument = new Document(path);
+
+        Path currentRelativePath = Paths.get("");
+        String savePath = currentRelativePath.toAbsolutePath().toString();
+
+        String documentSaveFolder = "\\documents\\unknownDocument\\";
+        String imageSaveDirPath = savePath + documentSaveFolder;
+
+        //Compile images from the document to display on the website
+        // Loop through all the pages of PDF file
+        for (int pageCount = 1; pageCount <= pdfDocument.getPages().size(); pageCount++) {
+            // Create stream object to save the output image
+
+            try (OutputStream imageStream = new FileOutputStream(imageSaveDirPath + "outputImage" + pageCount + ".png")){
+                // Create Resolution object
+                Resolution resolution = new Resolution(300);
+                // Create PngDevice object with particular resolution
+                PngDevice pngDevice = new PngDevice(resolution);
+                // Convert a particular page and save the image to stream
+                pngDevice.process(pdfDocument.getPages().get_Item(pageCount), imageStream);
+            }
+            catch (Exception e) {
+                System.out.println("Error happened when generating pdf images -> stack: " + e.getStackTrace());
+            }
+        }
+
+        System.out.println("Finished generating images from pdf!");
     }
 
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useSelector } from 'react';
 import axios, { Axios } from "axios";
+import { Document } from 'react-pdf';
 
 import './FileUpload.css';
 import { images } from '../../constants';
@@ -12,6 +13,7 @@ const FileUpload = () => {
   const [response, setResponse] = useState(null);
 
   const handleSubmit = async (event) => {
+    setFileName("");
     event.preventDefault();
     const formData = new FormData();
     formData.append("doc", file);
@@ -30,8 +32,7 @@ const FileUpload = () => {
   };
   
   const downloadDocument = () => {
-    const b = new Blob([response])
-    console.log(b.size);
+    const b = new Blob([response]);
     const url = window.URL.createObjectURL(b);
     const link = document.createElement('a');
     link.href = url;
@@ -40,10 +41,16 @@ const FileUpload = () => {
     link.click();
   }
 
+  const getPdfFile = () => {
+    const b = new Blob([response]);
+    const url = window.URL.createObjectURL(b);
+    return url;
+  }
+
   return (
     <div className="upload w-100">
       <div className="d-flex w-100 flex-row align-items-center">
-        <div class="input-group w-50 justify-content-start">
+        <div class="input-group w-50 justify-content-end">
           <div className="d-flex flex-column w-50 uploadButton">
             <input type="file" class="form-control mx-3" onChange={(e) => setFile(e.target.files[0])}/>
             <button type="submit" onClick={handleSubmit} class="btn w-50 m-3">Upload</button>
@@ -51,15 +58,16 @@ const FileUpload = () => {
         </div>
         {response != null ? (
           <>
-            <div className="w-50 d-flex justify-content-end">
-        <div class="card">
-          <img class="card-img-top" src="" alt="Image of document"/>
-          <div class="card-body">
-            <h5 class="card-title">Document is ready!</h5>
-            <button onClick={downloadDocument} class="btn btn-primary w-50 m-3">Download</button>
-          </div>
-        </div>
-        </div>
+            <div className="w-50 d-flex justify-content-start">
+              <div class="card">
+                {console.log(getPdfFile())}
+                <Document file={getPdfFile()} />
+                <div class="card-body downloadButton">
+                  <h5 class="card-title">Document is ready!</h5>
+                  <button onClick={downloadDocument} class="btn w-50 m-2">Download</button>
+                </div>
+              </div>
+            </div>
           </>
         ): null}
       </div>

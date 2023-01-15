@@ -20,3 +20,13 @@
     border-color: var(--secondary-color);
     color: var(--secondary-color);
 }
+
+.downloadButton > button {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.downloadButton > button:hover {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}
