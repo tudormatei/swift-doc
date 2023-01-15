@@ -1,6 +1,6 @@
 .upload {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -29,4 +29,19 @@
 .downloadButton > button:hover {
     border-color: var(--secondary-color);
     color: var(--secondary-color);
+}
+
+.imgDiv {
+    padding-bottom: 10rem;
+}
+
+.uploadButtons {
+    padding-top: 4rem;
+}
+
+.imgDiv > img {
+    min-height: 500px;
+    max-height: 900px;
+
+    aspect-ratio: 1.44px;
 }

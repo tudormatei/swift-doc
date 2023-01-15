@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.aspose.pdf.*;
 import ro.tudormatei.backend.model.DataModel;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -187,6 +188,8 @@ public class DocumentService {
         String documentSaveFolder = "\\documents\\unknownDocument\\";
         String imageSaveDirPath = savePath + documentSaveFolder;
 
+        emptyFolder(imageSaveDirPath);
+
         //Compile images from the document to display on the website
         // Loop through all the pages of PDF file
         for (int pageCount = 1; pageCount <= pdfDocument.getPages().size(); pageCount++) {
@@ -206,6 +209,16 @@ public class DocumentService {
         }
 
         System.out.println("Finished generating images from pdf!");
+    }
+
+    private void emptyFolder(String path) {
+        File folder = new File(path);
+        File[] files = folder.listFiles();
+        if(files!=null) { //some JVMs return null for empty dirs
+            for(File f: files) {
+                f.delete();
+            }
+        }
     }
 
 }

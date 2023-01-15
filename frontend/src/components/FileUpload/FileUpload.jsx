@@ -11,9 +11,11 @@ const FileUpload = () => {
   const [file, setFile] = useState(null);
   const [originalFileName, setFileName] = useState("");
   const [response, setResponse] = useState(null);
+  const [imgs, setImages] = useState([]);
 
   const handleSubmit = async (event) => {
     setFileName("");
+    setImages([]);
     event.preventDefault();
     const formData = new FormData();
     formData.append("doc", file);
@@ -27,6 +29,7 @@ const FileUpload = () => {
     }).then((response) => {
       console.log(response.data);
       setResponse(response.data);
+      getImages();
     })
     .catch((error) => console.log(error));
   };
@@ -41,15 +44,19 @@ const FileUpload = () => {
     link.click();
   }
 
-  const getPdfFile = () => {
-    const b = new Blob([response]);
-    const url = window.URL.createObjectURL(b);
-    return url;
-  }
+  const getImages = async () => {
+    try {
+      const response = await axios.get(UPLOAD_ENDPOINT);
+      const images = response.data;
+      setImages(images.map(image => `data:image/png;base64,${image}`));
+    } catch (error) {
+        console.log(error);
+    }
+  };
 
   return (
     <div className="upload w-100">
-      <div className="d-flex w-100 flex-row align-items-center">
+      <div className="d-flex w-100 flex-row align-items-center uploadButtons">
         <div class="input-group w-50 justify-content-end">
           <div className="d-flex flex-column w-50 uploadButton">
             <input type="file" class="form-control mx-3" onChange={(e) => setFile(e.target.files[0])}/>
@@ -60,8 +67,6 @@ const FileUpload = () => {
           <>
             <div className="w-50 d-flex justify-content-start">
               <div class="card">
-                {console.log(getPdfFile())}
-                <Document file={getPdfFile()} />
                 <div class="card-body downloadButton">
                   <h5 class="card-title">Document is ready!</h5>
                   <button onClick={downloadDocument} class="btn w-50 m-2">Download</button>
@@ -71,6 +76,15 @@ const FileUpload = () => {
           </>
         ): null}
       </div>
+      {imgs != null && response != null? (
+        <>
+          <div class="flex-row justify-content-center imgDiv">
+            {imgs.map((image, index) => (
+              <img class="img-fluid m-3" key={index} src={image} alt="Document Image"/>
+            ))}
+          </div>
+        </>
+      ) : null}
     </div>
   )
 }
