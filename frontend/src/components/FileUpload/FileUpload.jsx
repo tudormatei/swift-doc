@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useSelector } from 'react';
 import axios, { Axios } from "axios";
-import { Document } from 'react-pdf';
+import { Navigate } from 'react-router-dom';
 
 import './FileUpload.css';
 import { images } from '../../constants';
@@ -56,6 +56,7 @@ const FileUpload = () => {
 
   return (
     <div className="upload w-100">
+      {!sessionStorage.getItem('loggedIn') ? <Navigate replace to="/login" /> : null}
       <div className="d-flex w-100 flex-row align-items-center uploadButtons">
         <div class="input-group w-50 justify-content-end">
           <div className="d-flex flex-column w-50 uploadButton">

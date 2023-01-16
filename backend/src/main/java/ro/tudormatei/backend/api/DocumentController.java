@@ -1,15 +1,17 @@
 package ro.tudormatei.backend.api;
 
-import com.aspose.pdf.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.*;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import ro.tudormatei.backend.service.AccountService;
 import ro.tudormatei.backend.service.DocumentService;
 
 import java.io.File;
@@ -21,18 +23,20 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequestMapping("api/v1/document")
 @RestController
 public class DocumentController {
 
     @Autowired
     private DocumentService documentService;
 
+    @Autowired
+    private AccountService accountService;
+
     public DocumentController(DocumentService documentService) {
         this.documentService = documentService;
     }
 
-    @PostMapping
+    @PostMapping("api/v1/document")
     public ResponseEntity<InputStreamResource> processDocument(@RequestParam("doc") MultipartFile document) throws IOException {
         String filePath = documentService.process(document);
         Path path = Paths.get(filePath);
@@ -45,7 +49,7 @@ public class DocumentController {
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("api/v1/document")
     public ResponseEntity<List<byte[]>> unknownDocumentImages() throws IOException {
         Path currentRelativePath = Paths.get("");
         String savePath = currentRelativePath.toAbsolutePath().toString();
@@ -57,10 +61,10 @@ public class DocumentController {
 
         File folder = new File(imageSaveDirPath);
         File[] files = folder.listFiles();
-        if(files!=null) {
-            for(File f: files) {
+        if (files != null) {
+            for (File f : files) {
                 //Skip the generated pdf
-                if(f.getName().contains(".pdf")){
+                if (f.getName().contains(".pdf")) {
                     continue;
                 }
 
@@ -70,5 +74,30 @@ public class DocumentController {
         }
 
         return new ResponseEntity<>(resource, HttpStatus.OK);
+    }
+
+    @GetMapping("api/v1/auth")
+    public boolean getLoggedInStatus() {
+        boolean isLogged = true;
+
+        return isLogged;
+    }
+
+    @PostMapping("/api/v1/auth/register")
+    public boolean register(@RequestParam("email") String email, @RequestParam("pass") String pass) {
+        boolean status = false;
+
+        status = accountService.createAccount(email, pass);
+
+        return status;
+    }
+
+    @PostMapping("/api/v1/auth/login")
+    public boolean login(@RequestParam("email") String email, @RequestParam("pass") String pass) {
+        boolean status = false;
+
+        status = accountService.loginAccount(email, pass);
+
+        return status;
     }
 }

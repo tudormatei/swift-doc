@@ -1,0 +1,18 @@
+{
+  "Data": "date",
+  "DATA": "date",
+  "codul numeric personal": "CNP",
+  "cod numeric personal": "CNP",
+  "Subsemnatul": "fullname",
+  "Dl/Dna": "fullname",
+  "str\\.": "street",
+  "nr\\.": "nr",
+  "telefon": "phonenr",
+  "bl\\.": "block",
+  "sc\\.": "stair",
+  "et\\.": "level",
+  "ap\\.": "apartment",
+  "cart\\.": "neighborhood",
+  "oras": "city",
+  "judeţul": "county"
+}
