@@ -18,7 +18,7 @@ const LoginForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    
+    setLoginStatus(false);
     console.log(email);
     console.log(pass);
     formData.append("email", email);

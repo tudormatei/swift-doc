@@ -18,6 +18,7 @@ const RegisterForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
+    setRegisterStatus(false);
     
     console.log(email);
     console.log(pass);

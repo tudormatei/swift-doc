@@ -86,7 +86,11 @@ public class AccountService {
             // Read the JSON data from the file
             JsonNode json = mapper.readTree(new File(jsonPath));
 
-            if (((ObjectNode) json).get(email) == null) {
+            if (((ObjectNode) json).get(email).asText() == null) {
+                return false;
+            }
+
+            if (((ObjectNode) json).get(email).asText().equals("")) {
                 return false;
             }
 
