@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class DocumentController {
@@ -76,13 +77,6 @@ public class DocumentController {
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
 
-    @GetMapping("api/v1/auth")
-    public boolean getLoggedInStatus() {
-        boolean isLogged = true;
-
-        return isLogged;
-    }
-
     @PostMapping("/api/v1/auth/register")
     public boolean register(@RequestParam("email") String email, @RequestParam("pass") String pass) {
         boolean status = false;
@@ -99,5 +93,24 @@ public class DocumentController {
         status = accountService.loginAccount(email, pass);
 
         return status;
+    }
+
+    @PostMapping("api/v1/auth/updateData")
+    public boolean updateUserData(@RequestParam Map<String, String> userData) {
+        boolean status = false;
+
+        status = accountService.updateUserData(userData);
+
+        return status;
+    }
+
+    @PostMapping("api/v1/auth/getData")
+    public ResponseEntity<Map<String, String>> getUserData(@RequestParam("email") String email) {
+        Map<String, String> userData = accountService.getUserData(email);
+        if (userData == null) {
+            return null;
+        }
+
+        return new ResponseEntity<>(userData, HttpStatus.OK);
     }
 }
