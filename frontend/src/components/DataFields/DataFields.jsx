@@ -108,7 +108,7 @@ const DataFields = () => {
             <div class="w-50 text-center ">
                 <h1>Hello, {getEmail()}</h1>
             </div>
-            <button type="submit" onClick={getUserInfo} class="btn my-4">Show Current Info</button>
+            <button type="submit" onClick={getUserInfo} class="btn my-4">Show Personal Data</button>
             <div class="mb-3 w-25">
                 <label for="exampleInputName1" class="form-label">First Name</label>
                 <input type="text" class="form-control" placeholder={firstName} id="exampleInputName1" onChange={(e) => setFirstName(e.target.value)}/>

@@ -38,8 +38,8 @@ public class DocumentController {
     }
 
     @PostMapping("api/v1/document")
-    public ResponseEntity<InputStreamResource> processDocument(@RequestParam("doc") MultipartFile document) throws IOException {
-        String filePath = documentService.process(document);
+    public ResponseEntity<InputStreamResource> processDocument(@RequestParam("doc") MultipartFile document,  @RequestParam("email") String email) throws IOException {
+        String filePath = documentService.process(document, email);
         Path path = Paths.get(filePath);
         File file = path.toFile();
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));

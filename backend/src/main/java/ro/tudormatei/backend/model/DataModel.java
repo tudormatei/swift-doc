@@ -1,13 +1,27 @@
 package ro.tudormatei.backend.model;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class DataModel {
 
     private HashMap<String, String> wordsToSearch;
     private HashMap<String, String> wordsToReplace;
 
-    public DataModel() {
+    private final String email;
+
+    public DataModel(String user) {
+        email = user;
+
         wordsToSearch = new HashMap<>();
         SetupWordsToSearch();
         wordsToReplace = new HashMap<>();
@@ -15,41 +29,60 @@ public class DataModel {
     }
 
     private void SetupWordsToSearch() {
-        wordsToSearch.put("Data", "date");
-        wordsToSearch.put("DATA", "date");
-        wordsToSearch.put("codul numeric personal", "CNP");
-        wordsToSearch.put("cod numeric personal", "CNP");
-        wordsToSearch.put("Subsemnatul", "fullname");
-        wordsToSearch.put("Dl/Dna", "fullname");
-        wordsToSearch.put("str\\.", "street");
-        wordsToSearch.put("nr\\.", "nr");
-        wordsToSearch.put("telefon", "phonenr");
-        wordsToSearch.put("bl\\.", "block");
-        wordsToSearch.put("sc\\.", "stair");
-        wordsToSearch.put("et\\.", "level");
-        wordsToSearch.put("ap\\.", "apartment");
-        wordsToSearch.put("cart\\.", "neighborhood");
-        wordsToSearch.put("oras", "city");
-        wordsToSearch.put("judeţul", "county");
+        System.out.println("Words to search for user " + email + " are loading...");
+
+        Path currentRelativePath = Paths.get("");
+        String jsonPath = currentRelativePath.toAbsolutePath().toString();
+
+        String documentSaveFolder = "\\data\\";
+        jsonPath = jsonPath + documentSaveFolder + "wordsToSearch.json";
+
+        // Create a new ObjectMapper
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            JsonNode json = mapper.readTree(new File(jsonPath));
+
+            for (Iterator<Map.Entry<String, JsonNode>> it = json.fields(); it.hasNext(); ) {
+                Map.Entry<String, JsonNode> node = it.next();
+
+                wordsToSearch.put(node.getKey(), node.getValue().asText());
+
+                System.out.println("Loading key: " + node.getKey() + " with value: " + node.getValue().asText());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void SetupWordsToReplace() {
-        wordsToReplace.put("date", "01/01/2023");
-        wordsToReplace.put("fname", "Tudor");
-        wordsToReplace.put("lname", "Matei");
-        wordsToReplace.put("fullname", "Tudor Matei");
-        wordsToReplace.put("street", "Castanilor");
-        wordsToReplace.put("nr", "35");
-        wordsToReplace.put("email", "tudormatei010@gmail.com");
-        wordsToReplace.put("phonenr", "+40754225563");
-        wordsToReplace.put("block", "-");
-        wordsToReplace.put("stair", "-");
-        wordsToReplace.put("neighborhood", "-");
-        wordsToReplace.put("city", "Chitila");
-        wordsToReplace.put("county", "Ilfov");
-        wordsToReplace.put("CNP", "505050134425");
-        wordsToReplace.put("level", "-");
-        wordsToReplace.put("apartment", "-");
+        System.out.println("Words to replace for user " + email + " are loading...");
+
+        Path currentRelativePath = Paths.get("");
+        String jsonPath = currentRelativePath.toAbsolutePath().toString();
+
+        String documentSaveFolder = "\\data\\";
+        jsonPath = jsonPath + documentSaveFolder + "userData.json";
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            JsonNode json = mapper.readTree(new File(jsonPath));
+
+            for (Iterator<Map.Entry<String, JsonNode>> it = json.fields(); it.hasNext(); ) {
+                Map.Entry<String, JsonNode> node = it.next();
+                if(node.getKey().equals(email)){
+                    for (Iterator<Map.Entry<String, JsonNode>> iter = node.getValue().fields(); iter.hasNext(); ) {
+                        Map.Entry<String, JsonNode> data = iter.next();
+                        wordsToReplace.put(data.getKey(), data.getValue().asText());
+
+                        System.out.println("Loading key: " + data.getKey() + " with value: " + data.getValue().asText());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public HashMap<String, String> getWordsToSearch() {

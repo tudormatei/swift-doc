@@ -56,6 +56,9 @@ const LoginForm = () => {
   return (
     <form className="login w-100 d-flex flex-column justify-content-center align-items-center text-center">
       {sessionStorage.getItem('loggedIn') || loginStatus ? <Navigate replace to="/profile" /> : null}
+      <div class="w-50 text-center ">
+                <h1 class="mb-5">Login</h1>
+      </div>
       <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Email address</label>
           <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={(e) => setEmail(e.target.value)}/>

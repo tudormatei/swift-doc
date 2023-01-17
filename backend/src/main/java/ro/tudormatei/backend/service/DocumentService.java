@@ -14,16 +14,17 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.Map;
 
 @Service
 public class DocumentService {
 
-    public String process(MultipartFile document) {
+    public String process(MultipartFile document, String email) {
         System.out.println("Document received!");
 
         String savePath = saveDocument(document);
-        String modifiedDocumentPath = modifyDocument(savePath, document.getOriginalFilename());
+        String modifiedDocumentPath = modifyDocument(savePath, document.getOriginalFilename(), email);
 
         System.out.println(modifiedDocumentPath);
 
@@ -51,13 +52,14 @@ public class DocumentService {
         return savePath;
     }
 
-    private String modifyDocument(String documentPath, String name) {
+    private String modifyDocument(String documentPath, String name, String email) {
+        System.out.println("User that requested document completion is: " + email);
         System.out.println("Document is being modified...");
 
         String loadPath = documentPath + name;
         String savePath = documentPath + "output.pdf";
 
-        DataModel dataModel = new DataModel();
+        DataModel dataModel = new DataModel(email);
         Map<String, String> wordsToSearch = dataModel.getWordsToSearch();
         Map<String, String> wordsToReplace = dataModel.getWordsToReplace();
 
@@ -103,14 +105,21 @@ public class DocumentService {
                     System.out.println("The replacement was not found -> " + word);
                 }
 
+                String replacementKey = wordsToSearch.get(key);
+                if(replacementKey.equals("date")) {
+                    replacement = word + " " + LocalDate.now();
+                }
+                else if(wordsToSearch.get(key).equals("fullName")) {
+                    String fullName = wordsToReplace.get("fname") + " " + wordsToReplace.get("lname");
+                    replacement = word + " " + fullName;
+                }
+                else if(replacementKey.equals("streetNr")) {
+                    replacement = textFragment.getText();
+                }
+
                 //Check if field should be completed or is knows
                 Color foregroundColor = prevTextSate.getForegroundColor();
                 Color backgroundColor = Color.getWhite();
-
-                //Should not replace
-                if (word.equals("nr.")) {
-                    replacement = textFragment.getText();
-                }
 
                 textFragment.setText(replacement);
                 textFragment.getTextState().setFont(prevTextSate.getFont());

@@ -16,6 +16,7 @@ import java.util.Map;
 @Service
 public class AccountService {
     public boolean createAccount(String email, String pass) {
+        System.out.println("Creating new account, email: " + email + ", password: " + pass);
         Path currentRelativePath = Paths.get("");
         String jsonPath = currentRelativePath.toAbsolutePath().toString();
 
@@ -32,8 +33,8 @@ public class AccountService {
                 // Read the JSON data from the file
                 JsonNode json = mapper.readTree(new File(jsonPath));
 
-                System.out.println(json);
                 if (((ObjectNode) json).has(email)) {
+                    System.out.println("Email is already in use, email: " + email);
                     return false;
                 }
 
@@ -63,10 +64,12 @@ public class AccountService {
             }
         }
 
+        System.out.println("Creation of account is successful!");
         return true;
     }
 
     public boolean loginAccount(String email, String password) {
+        System.out.println("Attempting to log in user, email: " + email + ", password " + password);
         Path currentRelativePath = Paths.get("");
         String jsonPath = currentRelativePath.toAbsolutePath().toString();
 
@@ -76,6 +79,7 @@ public class AccountService {
         File jsonFile = new File(jsonPath);
 
         if (!jsonFile.exists()) {
+            System.out.println("Account database doesn't exist");
             return false;
         }
 
@@ -95,6 +99,7 @@ public class AccountService {
             }
 
             if (((ObjectNode) json).get(email).asText().equals(password)) {
+                System.out.println("Login was successful!");
                 return true;
             }
         } catch (IOException e) {
@@ -168,7 +173,7 @@ public class AccountService {
     public boolean updateUserData(Map<String, String> userData) {
         String email = userData.remove("email");
 
-        System.out.println(email + " email");
+        System.out.println("Updating user data for user: " + email);
 
         Path currentRelativePath = Paths.get("");
         String jsonPath = currentRelativePath.toAbsolutePath().toString();
@@ -229,6 +234,7 @@ public class AccountService {
     }
 
     public Map<String, String> getUserData(String email) {
+        System.out.println("Getting the user data for user: " + email);
         Path currentRelativePath = Paths.get("");
         String jsonPath = currentRelativePath.toAbsolutePath().toString();
 
@@ -255,8 +261,6 @@ public class AccountService {
                     for (Iterator<Map.Entry<String, JsonNode>> iter = node.getValue().fields(); iter.hasNext(); ) {
                         Map.Entry<String, JsonNode> data = iter.next();
                         userData.put(data.getKey(), data.getValue().asText());
-                        System.out.println(data.getValue().asText());
-                        System.out.println(data.getKey());
                     }
                 }
             }

@@ -17,8 +17,13 @@ const FileUpload = () => {
     setFileName("");
     setImages([]);
     event.preventDefault();
+
+    const email = sessionStorage.getItem('loggedUser');
+
     const formData = new FormData();
     formData.append("doc", file);
+    formData.append("email", email);
+    console.log(email);
     console.log(file.name);
     setFileName(file.name);
     const resp = await axios.post(UPLOAD_ENDPOINT, formData, {

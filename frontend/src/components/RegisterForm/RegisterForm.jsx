@@ -56,6 +56,9 @@ const RegisterForm = () => {
   return (
     <form className="register d-flex flex-column justify-content-center align-items-center text-center">
       {sessionStorage.getItem('loggedIn') || registerStatus ? <Navigate replace to="/profile" /> : null}
+    <div class="w-50 text-center ">
+      <h1 class="mb-5">Register</h1>
+    </div>
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
         <input type="email" class="form-control" onChange={(e) => setEmail(e.target.value)} id="exampleInputEmail1" aria-describedby="emailHelp"/>
