@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.aspose.pdf.*;
 import ro.tudormatei.backend.model.DataModel;
-import ro.tudormatei.backend.model.UserData;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -60,6 +59,12 @@ public class DocumentService {
         String loadPath = documentPath + name;
         String savePath = documentPath + "output.pdf";
 
+        Path currentRelativePath = Paths.get("");
+        String jsonDataPath = currentRelativePath.toAbsolutePath().toString();
+
+        String documentSaveFolder = "\\data\\";
+        jsonDataPath = jsonDataPath + documentSaveFolder + "userData.json";
+
         DataModel dataModel = new DataModel(email);
         Map<String, String> wordsToSearch = dataModel.getWordsToSearch();
         Map<String, String> wordsToReplace = dataModel.getWordsToReplace();
@@ -100,7 +105,7 @@ public class DocumentService {
 
                 String replacement = "";
                 try {
-                    replacement = /*" " + */word + " " + wordsToReplace.get(wordsToSearch.get(key))/* + " "*/;
+                    replacement = word + " " + wordsToReplace.get(wordsToSearch.get(key));
                     System.out.println("Found word: " + word + " -> replacing it with " + replacement);
                 } catch (Exception e) {
                     System.out.println("The replacement was not found -> " + word);

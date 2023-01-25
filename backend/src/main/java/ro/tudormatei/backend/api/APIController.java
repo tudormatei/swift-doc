@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class DocumentController {
+public class APIController {
 
     @Autowired
     private DocumentService documentService;
@@ -33,8 +33,13 @@ public class DocumentController {
     @Autowired
     private AccountService accountService;
 
-    public DocumentController(DocumentService documentService) {
+    public APIController() {
+
+    }
+
+    public APIController(DocumentService documentService, AccountService accountService) {
         this.documentService = documentService;
+        this.accountService = accountService;
     }
 
     @PostMapping("api/v1/document")

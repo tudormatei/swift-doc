@@ -23,16 +23,14 @@ const FileUpload = () => {
     const formData = new FormData();
     formData.append("doc", file);
     formData.append("email", email);
-    console.log(email);
-    console.log(file.name);
+
     setFileName(file.name);
-    const resp = await axios.post(UPLOAD_ENDPOINT, formData, {
+    await axios.post(UPLOAD_ENDPOINT, formData, {
       responseType: 'blob',
       headers: {
         "content-type": "multipart/form-data",
       },
     }).then((response) => {
-      console.log(response.data);
       setResponse(response.data);
       getImages();
     })

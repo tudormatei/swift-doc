@@ -2,7 +2,6 @@ package ro.tudormatei.backend.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.File;
 import java.io.IOException;
@@ -71,7 +70,7 @@ public class DataModel {
 
             for (Iterator<Map.Entry<String, JsonNode>> it = json.fields(); it.hasNext(); ) {
                 Map.Entry<String, JsonNode> node = it.next();
-                if(node.getKey().equals(email)){
+                if (node.getKey().equals(email)) {
                     for (Iterator<Map.Entry<String, JsonNode>> iter = node.getValue().fields(); iter.hasNext(); ) {
                         Map.Entry<String, JsonNode> data = iter.next();
                         wordsToReplace.put(data.getKey(), data.getValue().asText());
